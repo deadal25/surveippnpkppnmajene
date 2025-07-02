@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SURVEI BEST PPNPN</title>
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <style>
+    .text-shadow {
+      text-shadow: 0 0 10px rgba(0, 82, 153, 0.9);
+    }
+    .bg-shadow {
+      background: rgba(0, 82, 153, 0.9);
+      box-shadow: 0 0 15px rgba(0, 82, 153, 0.9);
+    }
+  </style>
+</head>
+<body class="m-0 p-0">
+
+<!-- Container -->
+<div class="relative w-full h-screen overflow-hidden flex flex-col justify-center items-start px-4 sm:px-10">
+
+  <!-- Background Images -->
+  <img src="https://storage.googleapis.com/a1aa/image/41782ce3-7db4-46a1-6ab4-acb248d54669.jpg"
+       alt="Background Sky"
+       class="absolute top-0 left-0 w-full h-full object-cover z-0" />
+  <img src="https://storage.googleapis.com/a1aa/image/4caa29e0-18aa-478f-2df5-8241ffb2f6f4.jpg"
+       alt="Mountains"
+       class="absolute top-0 left-0 w-full h-full object-cover z-10"
+       style="clip-path: polygon(0 40%, 100% 0, 100% 100%, 0% 100%)" />
+  <img src="https://storage.googleapis.com/a1aa/image/2200b70b-862a-488e-8608-c96a89a04e79.jpg"
+       alt="Snow Ground"
+       class="absolute bottom-0 left-0 w-full h-3/5 object-cover z-20" />
+
+  <!-- Content Layer -->
+  <div class="relative z-30 w-full max-w-xl">
+
+    <!-- Judul -->
+    <div class="bg-shadow p-4 rounded mb-4">
+      <h1 id="judulTriwulan" class="text-white font-extrabold text-3xl sm:text-4xl leading-tight text-shadow">
+        SURVEI BEST PPNPN TRIWULAN ...
+      </h1>
+    </div>
+
+    <!-- Tanggal -->
+    <div id="tanggalSekarang" class="bg-shadow rounded text-white text-sm font-semibold px-3 py-1 mb-4 inline-block">
+      ...
+    </div>
+
+    <!-- Pesan -->
+    <p class="bg-shadow rounded text-white text-sm px-4 py-2 mb-6">
+      Halo Sobat 059, Mimin mau minta tolong untuk mengisi survei best PPNPN menurut kamu, yuk kasih bintang terbaikmu 🥰
+    </p>
+
+    <!-- Form Responden -->
+    <div class="bg-shadow text-white p-4 rounded mb-4">
+      <label for="responden" class="block mb-2 text-sm font-semibold">Nama Responden</label>
+      <select id="responden" class="w-full text-black p-2 rounded">
+        <option value="">-- Pilih Nama Responden --</option>
+      </select>
+    </div>
+
+    <!-- Tombol Mulai -->
+    <button onclick="mulaiSurvei()"
+            class="bg-white text-blue-700 font-medium py-2 px-6 rounded-md w-full sm:w-auto">
+      Mulai sekarang
+    </button>
+
+  </div>
+</div>
+
+<!-- Firebase & Script -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBT5x1OXqBu14Ep8TG91Tr-OkhcuSIV9qc",
+    authDomain: "kppnmajene0059.firebaseapp.com",
+    databaseURL: "https://kppnmajene0059-default-rtdb.firebaseio.com",
+    projectId: "kppnmajene0059",
+    storageBucket: "kppnmajene0059.appspot.com",
+    messagingSenderId: "258408908708",
+    appId: "1:258408908708:web:6fd534dd3aa7ea72952331"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // Judul Triwulan Aktif
+  db.ref("pengaturan/surveippnp/aktifTriwulan").once("value").then(snapshot => {
+    const val = snapshot.val() || "TRIWULAN_I";
+    const map = { "TRIWULAN_I": "I", "TRIWULAN_II": "II", "TRIWULAN_III": "III", "TRIWULAN_IV": "IV" };
+    const angka = map[val] || "-";
+    const tahun = new Date().getFullYear();
+    document.getElementById("judulTriwulan").textContent =
+      `SURVEI BEST PPNPN TRIWULAN ${angka} TAHUN ${tahun}`;
+  });
+
+  // Tanggal Hari Ini
+  const bulanIndo = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+  const today = new Date();
+  document.getElementById("tanggalSekarang").textContent =
+    `${today.getDate()} ${bulanIndo[today.getMonth()]} ${today.getFullYear()}`;
+
+  // Nama Responden
+  const namaResponden = [
+    "Mohammad Taufiq Hidayanto", "Hendrik Gusti Toding Rante", "Heri Susilo", "Benny Hari Kusuma",
+    "Amran S", "Muhammad Ihsan Hapil", "Zulfikar Imtinan Aptadiansyah",
+    "Nabila Dwi Nur Farisa", "Oceania Prima Sari", "Dewi Laviona", "Elmi Puja Saraswati",
+    "Regina Dewana Pinastikha Prawatya", "Elok Mutiara Sani", "Rudy Marfar",
+    "Ali Yusuf", "Asri", "Muhammad Asrar", "Nuriya", "Ridwan B.",
+    "Sapar", "Sarwan", "Syarifah Bulqis", "Aldhi", "Yurdi", "Fahry Husaini"
+  ];
+  const select = document.getElementById("responden");
+  namaResponden.forEach(nama => {
+    const option = document.createElement("option");
+    option.value = nama;
+    option.textContent = nama;
+    select.appendChild(option);
+  });
+
+  function mulaiSurvei() {
+    const nama = document.getElementById("responden").value;
+    if (!nama) {
+      alert("Silakan pilih nama responden terlebih dahulu.");
+    } else {
+      localStorage.setItem("responden", nama);
+      window.location.href = "surveippnp.html";
+    }
+  }
+</script>
+</body>
+</html>
